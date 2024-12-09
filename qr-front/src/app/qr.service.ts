@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,7 @@ import { inject, Injectable } from '@angular/core';
 export class QrService {
 
   http = inject(HttpClient);
-  apiUrl = 'http://localhost:3000'
+  apiUrl = environment.apiUrl;
 
   constructor() { }
 

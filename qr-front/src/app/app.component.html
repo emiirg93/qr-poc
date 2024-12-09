@@ -1,40 +1,51 @@
 <form class="container" [formGroup]="form">
   <h3 class="text-center">Genera tu QR</h3>
   <div class="grid">
-    <div class="col-11">
-      <div class="field">
-        <label for="baseUrl">Ingresa URL base</label>
-        <input id="baseUrl" type="text" formControlName="baseUrl"
-          class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+    <div class="col-6">
+      <div class="grid">
+        <div class="col-12">
+          <div class="field">
+            <label for="baseUrl">Ingresa URL base</label>
+            <input id="baseUrl" type="text" formControlName="baseUrl"
+              class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+          </div>
+          <p-button size="small" label="Agregar parametros" (onClick)="addQueryParam()" [rounded]="true"
+            severity="success" />
+          <p-button icon="pi pi-qrcode" iconPos="right" class="ml-2" size="small" label="Generar QR" (onClick)="generate()" [rounded]="true" severity="success" />
+        </div>
+        <div class="col-12">
+          @for (queryParam of queryParamGroups; track $index) {
+          <form [formGroup]="queryParam">
+            <p>Query Param N°{{ $index + 1}}</p>
+            <div class="formgrid grid">
+              <div class="field col-6">
+                <label for="clave">Clave</label>
+                <input id="clave" formControlName="key" type="text"
+                  class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+              </div>
+              <div class="field col-6">
+                <label for="valor">Valor</label>
+                <input id="valor" formControlName="value" type="text"
+                  class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+              </div>
+            </div>
+          </form>
+          }
+        </div>
       </div>
     </div>
-    <div class="col-1 flex align-items-center justify-content-center">
-      <p-button icon="pi pi-plus" (onClick)="addQueryParam()" [rounded]="true" severity="success" />
+    <div class="col-6">
+      <div class="grid">
+        <div class="col-12 mt-3 text-center">
+          <small>{{previewUrl()}}</small>
+        </div>
+        <div class="col-12 text-center">
+          @if (qrCode()) {
+            <h3 class="mb-0">Código QR Generado:</h3>
+            <img style="height: 15rem; width: 15rem;" [src]="qrCode()" alt="QR Code" />
+            }
+        </div>
+      </div>
     </div>
   </div>
-
-    @for (queryParam of queryParamGroups; track $index) {
-      <form [formGroup]="queryParam">
-        <p>Query Param N°{{ $index + 1}}</p>
-        <div class="formgrid grid">
-          <div class="field col-3">
-              <label for="clave">Clave</label>
-              <input id="clave" formControlName="key" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-          </div>
-          <div class="field col-3">
-              <label for="valor">Valor</label>
-              <input id="valor" formControlName="value" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-          </div>
-      </div>
-      </form>
-    }
-
-    <p-button icon="pi pi-plus" (onClick)="generate()" [rounded]="true" severity="success" />
-
-    <pre>{{previewUrl()}}</pre>
-
-    @if (qrCode()) {
-      <h3>Código QR Generado:</h3>
-      <img [src]="qrCode()" alt="QR Code" />
-    }
 </form>
